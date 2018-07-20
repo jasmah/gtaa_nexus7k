@@ -1,0 +1,10 @@
+{
+  "ins_api": {
+    "version": "1.2",
+    "type": "cli_conf",
+    "chunk": "0",
+    "sid": "1",
+    "input": "conf t ;route-map {{routemapname}} permit 10 ;match ip address prefix-list {{prefixlist}} ;set extcommunity rt 65001:103 additive",
+    "output_format": "json"
+  }
+}

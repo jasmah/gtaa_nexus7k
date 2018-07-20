@@ -1,0 +1,10 @@
+{
+  "ins_api": {
+    "version": "1.2",
+    "type": "cli_conf",
+    "chunk": "0",
+    "sid": "1",
+    "input": "conf t ;router bgp {{bgpnum}} ;vrf {{vrfname}} ;address-family ipv4 unicast ;redistribute direct route-map DIRECT_BGP ;redistribute static route-map STATIC_BGP ;{{default}}",
+    "output_format": "json"
+  }
+}

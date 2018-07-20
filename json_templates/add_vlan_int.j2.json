@@ -1,0 +1,10 @@
+{
+  "ins_api": {
+    "version": "1.2",
+    "type": "cli_conf",
+    "chunk": "0",
+    "sid": "1",
+    "input": "conf t ;vlan {{vlanid}} ;name {{vlanname}} ;no shut ;exit ;spanning-tree vlan {{vlanid}} priority {{stppriority}}",
+    "output_format": "json"
+  }
+}

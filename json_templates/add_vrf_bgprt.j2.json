@@ -1,0 +1,10 @@
+{
+  "ins_api": {
+    "version": "1.2",
+    "type": "cli_conf",
+    "chunk": "0",
+    "sid": "1",
+    "input": "conf t ;vrf context {{vrfname}} ;address-family ipv4 unicast, route-target both {{bgprt}}",
+    "output_format": "json"
+  }
+}
