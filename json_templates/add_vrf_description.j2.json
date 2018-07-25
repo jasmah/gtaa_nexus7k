@@ -4,7 +4,7 @@
     "type": "cli_conf",
     "chunk": "0",
     "sid": "1",
-    "input": "conf t ;vrf context {{vrfname}} ; description {{vrfdescription}}",
+    "input": "conf t ;vrf context {{vrfname}} ;description {{vrfdescription}}",
     "output_format": "json"
   }
 }
