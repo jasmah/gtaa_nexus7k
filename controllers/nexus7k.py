@@ -8,7 +8,7 @@ import os
 
 DIR_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 JSON_TEMPLATES = Environment(loader=FileSystemLoader(DIR_PATH + '/json_templates'))
-os.environ['NO_PROXY'] = '10.10.100.111,10.10.100.112'
+os.environ['NO_PROXY'] = '10.10.100.111,10.10.100.112,10.10.200.105,10.10.200.106,10.10.200.109,10.10.200.110,10.10.200.107,10.10.200.108'
 
 class n7kcontroller:
     def __init__(self, server_url):
@@ -30,24 +30,24 @@ class n7kcontroller:
         }
         if method == "POST":
             response = requests.post(self.server_url + p_url, data=data, headers=headers, verify=False)
-            print(self.server_url)
-            print(data)
+            #print(self.server_url)
+            #print(data)
 
         elif method == "GET":
             response = requests.get(self.server_url + p_url, headers=headers, verify=False)
-        """
+
         else:
             raise Exception("Method " + method + " not supported by this controller")
         if 199 > response.status_code > 300:
             errorMessage = json.loads(response.text)["errorDocument"]["message"]
             raise Exception("Error: status code" + str(response.status_code) + " - " + errorMessage)
 
-        for status_code in response.json()["ins_api"]["outputs"]["output"]:
-            if status_code['code'] == "400":
-               print(response.json())
-               raise Exception("Error: status code :" + status_code['code'] + " Msg: " + status_code['msg'] +
+            for status_code in response.json()["ins_api"]["outputs"]["output"]:
+                if status_code['code'] == "400":
+                    print(response.json())
+                    raise Exception("Error: status code :" + status_code['code'] + " Msg: " + status_code['msg'] +
                                " CLI : " + status_code['input'] + " Server :" + self.server_url)
-        """
+
         return response
 
 

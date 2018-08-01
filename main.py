@@ -78,7 +78,9 @@ if __name__ == "__main__":
             if cell_obj.value == "": continue # Skip empty cells
             print('Column: [%s] cell_obj: [%s]' % (col_idx, cell_obj.value))
 
-            if xl_col_title[col_idx] == "VRF-Name":
+            if xl_col_title[col_idx] == "Execute":
+                if cell_obj.value == "No": break
+            elif xl_col_title[col_idx] == "VRF-Name":
                 vrf_name = cell_obj.value
             elif xl_col_title[col_idx] == "VRF-Desc":
                 vrf_description = cell_obj.value
@@ -120,9 +122,9 @@ if __name__ == "__main__":
                     T1_112.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
                 else:
                     T1_112.createvlaninterface(vlan_ID, vlan_name, stppriority="8192")
-                    T1_112.createl3svi(vlan_ID, vlan_name, vrf_name, n7k1_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="100")
+                    T1_112.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="100")
                     T1_111.createvlaninterface(vlan_ID, vlan_name, stppriority="16384")
-                    T1_111.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
+                    T1_111.createl3svi(vlan_ID, vlan_name, vrf_name, n7k1_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
             elif xl_col_title[col_idx] == "T1-BGP-Default":
                 T1_111.createbgp(bgp_num, vrf_name, cell_obj.value)
                 T1_112.createbgp(bgp_num, vrf_name, cell_obj.value)
@@ -155,9 +157,9 @@ if __name__ == "__main__":
                     T3_106.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
                 else:
                     T3_106.createvlaninterface(vlan_ID, vlan_name, stppriority="8192")
-                    T3_106.createl3svi(vlan_ID, vlan_name, vrf_name, n7k1_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="100")
+                    T3_106.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="100")
                     T3_105.createvlaninterface(vlan_ID, vlan_name, stppriority="16384")
-                    T3_105.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
+                    T3_105.createl3svi(vlan_ID, vlan_name, vrf_name, n7k1_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
             elif xl_col_title[col_idx] == "T3-BGP-Default":
                 T3_105.createbgp(bgp_num, vrf_name, cell_obj.value)
                 T3_106.createbgp(bgp_num, vrf_name, cell_obj.value)
@@ -190,9 +192,9 @@ if __name__ == "__main__":
                     ADM_110.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
                 else:
                     ADM_110.createvlaninterface(vlan_ID, vlan_name, stppriority="8192")
-                    ADM_110.createl3svi(vlan_ID, vlan_name, vrf_name, n7k1_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="100")
+                    ADM_110.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="100")
                     ADM_109.createvlaninterface(vlan_ID, vlan_name, stppriority="16384")
-                    ADM_109.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
+                    ADM_109.createl3svi(vlan_ID, vlan_name, vrf_name, n7k1_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
             elif xl_col_title[col_idx] == "ADM-BGP-Default":
                 ADM_109.createbgp(bgp_num, vrf_name, cell_obj.value)
                 ADM_110.createbgp(bgp_num, vrf_name, cell_obj.value)
@@ -225,9 +227,9 @@ if __name__ == "__main__":
                     IFT_108.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
                 else:
                     IFT_108.createvlaninterface(vlan_ID, vlan_name, stppriority="8192")
-                    IFT_108.createl3svi(vlan_ID, vlan_name, vrf_name, n7k1_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="100")
+                    IFT_108.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="100")
                     IFT_107.createvlaninterface(vlan_ID, vlan_name, stppriority="16384")
-                    IFT_107.createl3svi(vlan_ID, vlan_name, vrf_name, n7k2_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
+                    IFT_107.createl3svi(vlan_ID, vlan_name, vrf_name, n7k1_svi_ip, hsrp_group, n7k_svi_vip, hsrppriority="90")
             elif xl_col_title[col_idx] == "IFT-BGP-Default":
                 IFT_107.createbgp(bgp_num, vrf_name, cell_obj.value)
                 IFT_108.createbgp(bgp_num, vrf_name, cell_obj.value)
