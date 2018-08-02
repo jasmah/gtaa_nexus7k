@@ -1,0 +1,10 @@
+{
+  "ins_api": {
+    "version": "1.2",
+    "type": "cli_conf",
+    "chunk": "0",
+    "sid": "1",
+    "input": "conf t ;ip prefix-list {{prefixlist}} seq {{ipprefixlistcounter}} permit {{ipprefix}} le 32",
+    "output_format": "json"
+  }
+}

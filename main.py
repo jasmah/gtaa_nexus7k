@@ -247,20 +247,28 @@ if __name__ == "__main__":
                             T1_111.createroutemap(vrf_name, prefix_list)
                             T1_112.createroutemap(vrf_name, prefix_list)
                             T1_111.addroutetarget(vrf_name)
+                            T1_111.createipprefix(vrf_name, prefix_list)
                             T1_112.addroutetarget(vrf_name)
+                            T1_112.createipprefix(vrf_name, prefix_list)
                         elif value == "T3" and server[value] == 1:
                             T3_105.createroutemap(vrf_name, prefix_list)
                             T3_106.createroutemap(vrf_name, prefix_list)
                             T3_105.addroutetarget(vrf_name)
+                            T3_105.createipprefix(vrf_name, prefix_list)
                             T3_106.addroutetarget(vrf_name)
+                            T3_106.createipprefix(vrf_name, prefix_list)
                         elif value == "ADM" and server[value] == 1:
                             ADM_109.createroutemap(vrf_name, prefix_list)
                             ADM_110.createroutemap(vrf_name, prefix_list)
                             ADM_109.addroutetarget(vrf_name)
+                            ADM_109.createipprefix(vrf_name, prefix_list)
                             ADM_110.addroutetarget(vrf_name)
+                            ADM_110.createipprefix(vrf_name, prefix_list)
                         elif value == "IFT" and server[value] == 1:
                             IFT_107.createroutemap(vrf_name, prefix_list)
                             IFT_108.createroutemap(vrf_name, prefix_list)
                             IFT_107.addroutetarget(vrf_name)
+                            IFT_107.createipprefix(vrf_name, prefix_list)
                             IFT_108.addroutetarget(vrf_name)
+                            IFT_108.createipprefix(vrf_name, prefix_list)
 

@@ -204,3 +204,29 @@ class n7kcontroller:
             p_url='/ins',
             data=payload,
             method="POST")
+
+    def createipprefix(self, vrfname, prefixlist):
+
+        template = JSON_TEMPLATES.get_template('get_ip_routes_vrf.j2.json')
+        payload = template.render(vrfname=vrfname)
+        iproutes = self.configure_nexus(
+            p_url='/ins',
+            data=payload,
+            method="POST")
+
+        ip_prefix_list_counter = 5
+        for parameter in iproutes.json()["ins_api"]["outputs"]["output"]["body"]["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]:
+            if parameter['ubest'] == "true":
+              ipprefix = parameter['ipprefix']
+              addipprefixlist(prefixlist, ipprefix, ip_preflix_list_counter)
+              ip_prefix_list_counter = ip_prefix_list_counter + 5
+
+
+    def addipprefixlist(self, prefixlist, ipprefix, ipprefixlistcounter):
+
+        template = JSON_TEMPLATES.get_template('add_ip_prefix_list.j2.json')
+        payload = template.render(prefixlist=prefixlist, ipprefix=ipprefix, ipprefixlistcounter=ipprefixlistcounter)
+        self.configure_nexus(
+            p_url='/ins',
+            data=payload,
+            method="POST")
