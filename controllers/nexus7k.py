@@ -196,7 +196,11 @@ class n7kcontroller:
             method="POST")
 
     def addroutetarget(self, vrfname):
-
+        """
+        Create route target
+        :param vrfname:
+        :return:
+        """
         template = JSON_TEMPLATES.get_template('add_route_target.j2.json')
         routemapname = "GREY_" + vrfname
         payload = template.render(vrfname=vrfname, routemapname=routemapname)
@@ -206,7 +210,15 @@ class n7kcontroller:
             method="POST")
 
     def createipprefix(self, vrfname, prefixlist):
-
+        """
+        Create IP prefix list
+        1st do a show ip route direct vrf for the vrf context
+        2nd search the list for the ip prefix
+        3rd create ip prefix list
+        :param vrfname:
+        :param prefixlist:
+        :return:
+        """
         template = JSON_TEMPLATES.get_template('get_ip_routes_vrf.j2.json')
         payload = template.render(vrfname=vrfname)
         iproutes = self.configure_nexus(
@@ -214,19 +226,20 @@ class n7kcontroller:
             data=payload,
             method="POST")
 
-        ip_prefix_list_counter = 5
+
+        ipprefixlistcounter = 5
         for parameter in iproutes.json()["ins_api"]["outputs"]["output"]["body"]["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]:
-            if parameter['ubest'] == "true":
-              ipprefix = parameter['ipprefix']
-              addipprefixlist(prefixlist, ipprefix, ip_preflix_list_counter)
-              ip_prefix_list_counter = ip_prefix_list_counter + 5
+               ipprefix = parameter['ipprefix']
+               for key in parameter["TABLE_path"]["ROW_path"].keys():
+                    print (key + ": " + str(parameter["TABLE_path"]["ROW_path"][key]))
+                    if key == "ubest" and str(parameter["TABLE_path"]["ROW_path"][key]) == "true":
+                       template = JSON_TEMPLATES.get_template('add_ip_prefix_list.j2.json')
+                       payload = template.render(prefixlist=prefixlist, ipprefix=ipprefix, ipprefixlistcounter=ipprefixlistcounter)
+                       self.configure_nexus(
+                           p_url='/ins',
+                           data=payload,
+                           method="POST")
+                       ipprefixlistcounter += 5
 
 
-    def addipprefixlist(self, prefixlist, ipprefix, ipprefixlistcounter):
 
-        template = JSON_TEMPLATES.get_template('add_ip_prefix_list.j2.json')
-        payload = template.render(prefixlist=prefixlist, ipprefix=ipprefix, ipprefixlistcounter=ipprefixlistcounter)
-        self.configure_nexus(
-            p_url='/ins',
-            data=payload,
-            method="POST")
