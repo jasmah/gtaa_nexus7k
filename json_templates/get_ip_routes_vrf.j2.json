@@ -4,7 +4,7 @@
     "type": "cli_show",
     "chunk": "0",
     "sid": "1",
-    "input": "show ip route vrf {{vrfname}}",
+    "input": "show ip route direct vrf {{vrfname}}",
     "output_format": "json"
   }
 }

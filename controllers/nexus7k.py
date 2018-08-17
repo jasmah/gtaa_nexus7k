@@ -1,3 +1,17 @@
+"""
+Copyright (c) 2018 Cisco and/or its affiliates.
+This software is licensed to you under the terms of the Cisco Sample
+Code License, Version 1.0 (the "License"). You may obtain a copy of the
+License at
+               https://developer.cisco.com/docs/licenses
+All use of the material herein must be in accordance with the terms of
+the License. All rights not expressly granted by the License are
+reserved. Unless required by applicable law or agreed to separately in
+writing, software distributed under the License is distributed on an "AS
+IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied.
+"""
+
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
 from constants import *
@@ -30,8 +44,8 @@ class n7kcontroller:
         }
         if method == "POST":
             response = requests.post(self.server_url + p_url, data=data, headers=headers, verify=False)
-            #print(self.server_url)
-            #print(data)
+            print(self.server_url)
+            print(data)
 
         elif method == "GET":
             response = requests.get(self.server_url + p_url, headers=headers, verify=False)
@@ -42,7 +56,7 @@ class n7kcontroller:
             errorMessage = json.loads(response.text)["errorDocument"]["message"]
             raise Exception("Error: status code" + str(response.status_code) + " - " + errorMessage)
 
-            for status_code in response.json()["ins_api"]["outputs"]["output"]:
+        for status_code in response.json()["ins_api"]["outputs"]["output"]:
                 if status_code['code'] == "400":
                     print(response.json())
                     raise Exception("Error: status code :" + status_code['code'] + " Msg: " + status_code['msg'] +
@@ -209,6 +223,7 @@ class n7kcontroller:
             data=payload,
             method="POST")
 
+
     def createipprefix(self, vrfname, prefixlist):
         """
         Create IP prefix list
@@ -226,20 +241,35 @@ class n7kcontroller:
             data=payload,
             method="POST")
 
-
         ipprefixlistcounter = 5
-        for parameter in iproutes.json()["ins_api"]["outputs"]["output"]["body"]["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]:
-               ipprefix = parameter['ipprefix']
-               for key in parameter["TABLE_path"]["ROW_path"].keys():
-                    print (key + ": " + str(parameter["TABLE_path"]["ROW_path"][key]))
+        #print(iproutes.json()["ins_api"]["outputs"]["output"]["body"]["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"])
+        if type(iproutes.json()["ins_api"]["outputs"]["output"]["body"]["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]) is type([]):
+            #print("here1")
+            for parameter in iproutes.json()["ins_api"]["outputs"]["output"]["body"]["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]:
+                ipprefix = parameter['ipprefix']
+                for key in parameter["TABLE_path"]["ROW_path"].keys():
+                    #print(key + ": " + str(parameter["TABLE_path"]["ROW_path"][key]))
                     if key == "ubest" and str(parameter["TABLE_path"]["ROW_path"][key]) == "true":
-                       template = JSON_TEMPLATES.get_template('add_ip_prefix_list.j2.json')
-                       payload = template.render(prefixlist=prefixlist, ipprefix=ipprefix, ipprefixlistcounter=ipprefixlistcounter)
-                       self.configure_nexus(
-                           p_url='/ins',
-                           data=payload,
-                           method="POST")
-                       ipprefixlistcounter += 5
+                        template = JSON_TEMPLATES.get_template('add_ip_prefix_list.j2.json')
+                        payload = template.render(prefixlist=prefixlist, ipprefix=ipprefix, ipprefixlistcounter=ipprefixlistcounter)
+                        self.configure_nexus(
+                            p_url='/ins',
+                            data=payload,
+                            method="POST")
+                        ipprefixlistcounter += 5
 
+        else:
+            #print("here2")
+            ipprefix = iproutes.json()["ins_api"]["outputs"]["output"]["body"]["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]["ipprefix"]
+            for key in iproutes.json()["ins_api"]["outputs"]["output"]["body"]["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]["TABLE_path"]["ROW_path"]:
+                #print(key + ": " + str(iproutes.json()["ins_api"]["outputs"]["output"]["body"]["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]["TABLE_path"]["ROW_path"][key]))
+                if key == "ubest" and str(iproutes.json()["ins_api"]["outputs"]["output"]["body"]["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]["TABLE_path"]["ROW_path"][key]) == "true":
+                    template = JSON_TEMPLATES.get_template('add_ip_prefix_list.j2.json')
+                    payload = template.render(prefixlist=prefixlist, ipprefix=ipprefix, ipprefixlistcounter=ipprefixlistcounter)
+                    self.configure_nexus(
+                        p_url='/ins',
+                        data=payload,
+                        method="POST")
+                    ipprefixlistcounter += 5
 
 
